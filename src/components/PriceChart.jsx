@@ -4,7 +4,9 @@ import {
     CategoryScale,
     LinearScale,
     BarElement,
+    BarController,
     LineElement,
+    LineController,
     PointElement,
     Tooltip,
     Legend,
@@ -34,7 +36,9 @@ const nowLinePlugin = {
 }
 
 ChartJS.register(
-    CategoryScale, LinearScale, BarElement, LineElement,
+    CategoryScale, LinearScale,
+    BarElement, BarController,
+    LineElement, LineController,
     PointElement, Tooltip, Legend, nowLinePlugin
 )
 
