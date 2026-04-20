@@ -111,7 +111,7 @@ body {
 
 .settings-input-group { display: flex; align-items: center; gap: 8px; }
 
-.settings-bar input[type="number"] {
+.settings-bar input {
     background: #0f172a;
     border: 1px solid #334155;
     border-radius: 8px;
@@ -119,9 +119,10 @@ body {
     padding: 8px 12px;
     font-size: 0.95rem;
     width: 100px;
+    font-family: inherit;
 }
 
-.settings-bar input[type="number"]:focus { outline: none; border-color: #facc15; }
+.settings-bar input:focus { outline: none; border-color: #facc15; }
 
 .unit-label { font-size: 0.85rem; color: #94a3b8; }
 
