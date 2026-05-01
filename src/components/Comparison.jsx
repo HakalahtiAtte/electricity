@@ -13,9 +13,9 @@ function CompItem({ label, avg, fixedPrice }) {
     if (avg === null) {
         return (
             <div className="comp-item">
-                <div className="comp-period">{label} avg</div>
-                <div className="comp-avg muted">No data yet</div>
-                <div className="comp-diff muted">Prices not published yet</div>
+                <div className="comp-period">{label} ka.</div>
+                <div className="comp-avg muted">Ei tietoja</div>
+                <div className="comp-diff muted">Hintoja ei julkaistu vielä</div>
             </div>
         )
     }
@@ -23,12 +23,12 @@ function CompItem({ label, avg, fixedPrice }) {
     const cheaper = diff < 0
     return (
         <div className="comp-item">
-            <div className="comp-period">{label} avg</div>
-            <div className={`comp-avg ${getClass(avg, fixedPrice)}`}>{fmt(avg)} c/kWh</div>
+            <div className="comp-period">{label} ka.</div>
+            <div className={`comp-avg ${getClass(avg, fixedPrice)}`}>{fmt(avg)} snt/kWh</div>
             <div className={`comp-diff ${cheaper ? 'cheaper' : 'pricier'}`}>
                 {cheaper
-                    ? `${Math.abs(diff).toFixed(2)}c cheaper than fixed`
-                    : `${diff.toFixed(2)}c pricier than fixed`}
+                    ? `${Math.abs(diff).toFixed(2)} snt halvempi kuin kiinteä`
+                    : `${diff.toFixed(2)} snt kalliimpi kuin kiinteä`}
             </div>
         </div>
     )
@@ -60,14 +60,14 @@ export default function Comparison({ data, fixedPrice }) {
                 onClick={() => setOpen(o => !o)}
                 onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && setOpen(o => !o)}
             >
-                <h2 className="section-title">Fixed price vs spot averages</h2>
+                <h2 className="section-title">Kiinteä hinta vs spot-keskiarvot</h2>
                 <span className="collapse-btn" aria-hidden="true">{open ? '▲' : '▼'}</span>
             </div>
             {open && (
                 <div className="comp-grid">
-                    <CompItem label="Today"            avg={avg(today)}           fixedPrice={fixedPrice} />
-                    <CompItem label="Tomorrow"         avg={avg(tomorrow)}         fixedPrice={fixedPrice} />
-                    <CompItem label="Today & tomorrow" avg={avg(todayAndTomorrow)} fixedPrice={fixedPrice} />
+                    <CompItem label="Tänään"            avg={avg(today)}           fixedPrice={fixedPrice} />
+                    <CompItem label="Huomenna"         avg={avg(tomorrow)}         fixedPrice={fixedPrice} />
+                    <CompItem label="Tänään & huomenna" avg={avg(todayAndTomorrow)} fixedPrice={fixedPrice} />
                 </div>
             )}
         </div>

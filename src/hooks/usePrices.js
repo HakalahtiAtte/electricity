@@ -54,11 +54,13 @@ export function usePrices() {
                 const res = await fetch('https://api.spot-hinta.fi/TodayAndDayForward')
                 if (!res.ok) throw new Error(`HTTP ${res.status}`)
                 const json = await res.json()
-                const sorted = json.sort((a, b) => new Date(a.DateTime) - new Date(b.DateTime))
+                if (!Array.isArray(json)) throw new Error('Unexpected response format')
+                const valid = json.filter(p => p && typeof p.DateTime === 'string' && typeof p.PriceNoTax === 'number' && isFinite(p.PriceNoTax))
+                const sorted = valid.sort((a, b) => new Date(a.DateTime) - new Date(b.DateTime))
                 setData(sorted)
                 setLastUpdated(new Date())
             } catch (e) {
-                setError('Failed to load prices. Please try again.')
+                setError('Hintojen lataus epäonnistui. Yritä uudelleen.')
             } finally {
                 setLoading(false)
             }

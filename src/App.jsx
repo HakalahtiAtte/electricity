@@ -24,6 +24,13 @@ export default function App() {
     const [heroVisible, setHeroVisible] = useState(true)
     const [countdown, setCountdown] = useState(null)
 
+    const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light')
+
+    useEffect(() => {
+        document.documentElement.setAttribute('data-theme', theme)
+        localStorage.setItem('theme', theme)
+    }, [theme])
+
     // Countdown to next refresh
     useEffect(() => {
         if (!lastUpdated) return
@@ -53,7 +60,7 @@ export default function App() {
         if (!data.length) return
         const current = getCurrentEntry(data)
         if (current) {
-            document.title = `${tocents(current.PriceNoTax).toFixed(2)}c — Electricity Prices`
+            document.title = `${tocents(current.PriceNoTax).toFixed(2)} snt — Sähkön hinnat`
         }
     }, [data])
 
@@ -69,11 +76,11 @@ export default function App() {
             {!heroVisible && currentCents !== null && (
                 <div className={`sticky-price-bar ${priceClass(currentCents, fixedPrice)}`}>
                     <div className="sticky-left">
-                        <span className="sticky-label">Now</span>
-                        <span className="sticky-price">{currentCents.toFixed(2)}c</span>
+                        <span className="sticky-label">Nyt</span>
+                        <span className="sticky-price">{currentCents.toFixed(2)} snt</span>
                         {nextCents !== null && (
                             <span className={`sticky-trend ${nextCents > currentCents ? 'trend-up' : 'trend-down'}`}>
-                                {nextCents > currentCents ? '↑' : '↓'} {nextCents.toFixed(2)}c
+                                {nextCents > currentCents ? '↑' : '↓'} {nextCents.toFixed(2)} snt
                             </span>
                         )}
                     </div>
@@ -85,34 +92,43 @@ export default function App() {
 
             <header className="app-header">
                 <div>
-                    <h1>Electricity Prices</h1>
-                    <p className="app-subtitle">Finland spot prices · incl. VAT 25.5%</p>
+                    <h1>Sähkön spot-hinnat</h1>
+                    <p className="app-subtitle">Suomi · sis. ALV 25,5 %</p>
                 </div>
-                {lastUpdated && (
-                    <div className="header-meta">
-                        <span className="updated-at">
-                            Updated {lastUpdated.toLocaleTimeString('fi-FI', {
-                                timeZone: 'Europe/Helsinki',
-                                hour: '2-digit',
-                                minute: '2-digit',
-                            })}
-                        </span>
-                        {countdown !== null && (
-                            <span className="next-refresh">↻ {fmtCountdown(countdown)}</span>
-                        )}
-                    </div>
-                )}
+                <div className="header-right">
+                    {lastUpdated && (
+                        <div className="header-meta">
+                            <span className="updated-at">
+                                Päivitetty {lastUpdated.toLocaleTimeString('fi-FI', {
+                                    timeZone: 'Europe/Helsinki',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                })}
+                            </span>
+                            {countdown !== null && (
+                                <span className="next-refresh">↻ {fmtCountdown(countdown)}</span>
+                            )}
+                        </div>
+                    )}
+                    <button
+                        className="theme-toggle"
+                        onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
+                        aria-label={theme === 'dark' ? 'Vaihda vaaleaan teemaan' : 'Vaihda tummaan teemaan'}
+                    >
+                        {theme === 'dark' ? '☀' : '☾'}
+                    </button>
+                </div>
             </header>
 
             <SettingsBar fixedPrice={fixedPrice} onChange={setFixedPrice} />
 
-            {loading && <div className="status-msg">Loading prices...</div>}
+            {loading && <div className="status-msg">Ladataan hintoja...</div>}
             {error && <div className="status-msg error">{error}</div>}
 
             {!loading && !error && data.length > 0 && (
                 <>
                     <SummaryCards data={data} fixedPrice={fixedPrice} />
-                    <PriceChart data={data} fixedPrice={fixedPrice} />
+                    <PriceChart data={data} fixedPrice={fixedPrice} theme={theme} />
                     <Comparison data={data} fixedPrice={fixedPrice} />
                     <BestTimes data={data} fixedPrice={fixedPrice} />
                 </>

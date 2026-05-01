@@ -18,7 +18,7 @@ export default function SettingsBar({ fixedPrice, onChange }) {
 
     return (
         <div className="settings-bar">
-            <label htmlFor="fixed-input">Your fixed contract price</label>
+            <label htmlFor="fixed-input">Kiinteä sopimushintasi</label>
             <div className="settings-input-group">
                 <input
                     id="fixed-input"
@@ -28,10 +28,10 @@ export default function SettingsBar({ fixedPrice, onChange }) {
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
-                <span className="unit-label">c/kWh</span>
+                <span className="unit-label">snt/kWh</span>
             </div>
             <div className="fixed-badge">
-                Comparing to {fixedPrice.toFixed(1)} c/kWh
+                Vertailuhinta: {fixedPrice.toFixed(1)} snt/kWh
             </div>
         </div>
     )

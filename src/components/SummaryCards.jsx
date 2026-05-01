@@ -35,7 +35,6 @@ export default function SummaryCards({ data, fixedPrice }) {
     const current = getCurrentEntry(data)
     const currentCents = current ? tocents(current.PriceNoTax) : null
 
-    // Next interval for trend arrow
     const nowMs = Date.now()
     const nextEntry = data.find(p => new Date(p.DateTime).getTime() > nowMs)
     const nextCents = nextEntry ? tocents(nextEntry.PriceNoTax) : null
@@ -56,28 +55,28 @@ export default function SummaryCards({ data, fixedPrice }) {
     return (
         <>
             <div className={`current-price-hero ${heroClass}`}>
-                <div className="current-price-label">Current price</div>
+                <div className="current-price-label">Nykyinen hinta</div>
                 {currentCents !== null ? (
                     <>
                         <div className="current-price-row">
                             <div className="current-price-value">
                                 {fmt(currentCents)}
-                                <span className="current-price-unit">c/kWh</span>
+                                <span className="current-price-unit">snt/kWh</span>
                             </div>
                             {nextCents !== null && (
                                 <div className={`price-trend ${trendUp ? 'trend-up' : 'trend-down'}`}>
                                     <span className="trend-arrow">{trendUp ? '↑' : '↓'}</span>
                                     <span className="trend-label">
-                                        {fmt(nextCents)}c next
+                                        Seur. {fmt(nextCents)} snt
                                     </span>
                                 </div>
                             )}
                         </div>
-                        <div className="current-price-sub">incl. VAT 25.5%</div>
+                        <div className="current-price-sub">sis. ALV 25,5 %</div>
                         <div className={currentCents < fixedPrice ? 'badge saving' : 'badge losing'}>
                             {currentCents < fixedPrice
-                                ? `${(fixedPrice - currentCents).toFixed(2)}c below fixed`
-                                : `${(currentCents - fixedPrice).toFixed(2)}c above fixed`}
+                                ? `${(fixedPrice - currentCents).toFixed(2)} snt alle kiinteän`
+                                : `${(currentCents - fixedPrice).toFixed(2)} snt yli kiinteän`}
                         </div>
                     </>
                 ) : (
@@ -87,15 +86,15 @@ export default function SummaryCards({ data, fixedPrice }) {
 
             <div className="cards">
                 <div className="card">
-                    <div className="card-label">Today average</div>
+                    <div className="card-label">Tänään keskiarvo</div>
                     {avg !== null ? (
                         <>
                             <div className={`card-value ${getClass(avg, fixedPrice)}`}>{fmt(avg)}</div>
-                            <div className="card-unit">c/kWh incl. VAT</div>
+                            <div className="card-unit">snt/kWh sis. ALV</div>
                             <div className={avg < fixedPrice ? 'badge saving' : 'badge losing'}>
                                 {avg < fixedPrice
-                                    ? `avg ${(fixedPrice - avg).toFixed(2)}c below fixed`
-                                    : `avg ${(avg - fixedPrice).toFixed(2)}c above fixed`}
+                                    ? `ka. ${(fixedPrice - avg).toFixed(2)} snt alle kiinteän`
+                                    : `ka. ${(avg - fixedPrice).toFixed(2)} snt yli kiinteän`}
                             </div>
                         </>
                     ) : (
@@ -104,12 +103,12 @@ export default function SummaryCards({ data, fixedPrice }) {
                 </div>
 
                 <div className="card">
-                    <div className="card-label">Today lowest</div>
+                    <div className="card-label">Tänään alin</div>
                     {todayLow ? (
                         <>
                             <div className="card-value cheap">{fmt(tocents(todayLow.PriceNoTax))}</div>
-                            <div className="card-unit">c/kWh incl. VAT</div>
-                            <div className="card-time">at {fmtTime(todayLow.DateTime)}</div>
+                            <div className="card-unit">snt/kWh sis. ALV</div>
+                            <div className="card-time">klo {fmtTime(todayLow.DateTime)}</div>
                         </>
                     ) : (
                         <div className="card-value">—</div>
@@ -117,12 +116,12 @@ export default function SummaryCards({ data, fixedPrice }) {
                 </div>
 
                 <div className="card">
-                    <div className="card-label">Today highest</div>
+                    <div className="card-label">Tänään korkein</div>
                     {todayHigh ? (
                         <>
                             <div className="card-value expensive">{fmt(tocents(todayHigh.PriceNoTax))}</div>
-                            <div className="card-unit">c/kWh incl. VAT</div>
-                            <div className="card-time">at {fmtTime(todayHigh.DateTime)}</div>
+                            <div className="card-unit">snt/kWh sis. ALV</div>
+                            <div className="card-time">klo {fmtTime(todayHigh.DateTime)}</div>
                         </>
                     ) : (
                         <div className="card-value">—</div>
@@ -130,41 +129,41 @@ export default function SummaryCards({ data, fixedPrice }) {
                 </div>
 
                 <div className="card">
-                    <div className="card-label">Cheaper than fixed</div>
+                    <div className="card-label">Alle kiinteän hinnan</div>
                     <div className="card-value cheap">
                         {todayCents.length ? `${cheaperCount} / ${todayCents.length}` : '—'}
                     </div>
-                    <div className="card-unit">intervals today</div>
+                    <div className="card-unit">jaksoa tänään</div>
                 </div>
 
                 <div className="card">
-                    <div className="card-label">Tomorrow lowest</div>
+                    <div className="card-label">Huomenna alin</div>
                     {tmrLow ? (
                         <>
                             <div className="card-value cheap">{fmt(tocents(tmrLow.PriceNoTax))}</div>
-                            <div className="card-unit">c/kWh incl. VAT</div>
-                            <div className="card-time">at {fmtTime(tmrLow.DateTime)}</div>
+                            <div className="card-unit">snt/kWh sis. ALV</div>
+                            <div className="card-time">klo {fmtTime(tmrLow.DateTime)}</div>
                         </>
                     ) : (
                         <>
                             <div className="card-value muted">—</div>
-                            <div className="card-time muted">Published ~14:15</div>
+                            <div className="card-time muted">Julkaistaan ~klo 14:15</div>
                         </>
                     )}
                 </div>
 
                 <div className="card">
-                    <div className="card-label">Tomorrow highest</div>
+                    <div className="card-label">Huomenna korkein</div>
                     {tmrHigh ? (
                         <>
                             <div className="card-value expensive">{fmt(tocents(tmrHigh.PriceNoTax))}</div>
-                            <div className="card-unit">c/kWh incl. VAT</div>
-                            <div className="card-time">at {fmtTime(tmrHigh.DateTime)}</div>
+                            <div className="card-unit">snt/kWh sis. ALV</div>
+                            <div className="card-time">klo {fmtTime(tmrHigh.DateTime)}</div>
                         </>
                     ) : (
                         <>
                             <div className="card-value muted">—</div>
-                            <div className="card-time muted">Published ~14:15</div>
+                            <div className="card-time muted">Julkaistaan ~klo 14:15</div>
                         </>
                     )}
                 </div>

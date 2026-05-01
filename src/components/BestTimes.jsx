@@ -40,13 +40,13 @@ export default function BestTimes({ data, fixedPrice }) {
                     style={{ flex: 1, marginBottom: 0 }}
                 >
                     <h2 className="section-title">
-                        {intervalMode === '15min' ? 'Best 15-min slots today' : 'Best hours today'}
+                        {intervalMode === '15min' ? 'Parhaat 15 min jaksot tänään' : 'Parhaat tunnit tänään'}
                     </h2>
                 </div>
 
                 {open && (
                     <div className="toggle-group">
-                        {[['15min', '15 min'], ['1hour', '1 hour']].map(([val, label]) => (
+                        {[['15min', '15 min'], ['1hour', '1 tunti']].map(([val, label]) => (
                             <button
                                 key={val}
                                 className={intervalMode === val ? 'toggle-btn active' : 'toggle-btn'}
@@ -85,12 +85,12 @@ export default function BestTimes({ data, fixedPrice }) {
                             <span className="time-range">{start} – {end}</span>
                             {belowFixed && (
                                 <span className="below-fixed">
-                                    {(fixedPrice - cents).toFixed(2)}c below fixed
+                                    {(fixedPrice - cents).toFixed(2)} snt alle kiinteän
                                 </span>
                             )}
                         </div>
                         <span className={`slot-price ${getClass(cents, fixedPrice)}`}>
-                            {fmt(cents)} c/kWh
+                            {fmt(cents)} snt/kWh
                         </span>
                     </div>
                 )
