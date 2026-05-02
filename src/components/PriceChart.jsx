@@ -65,7 +65,7 @@ const MIN_BAR_WIDTH = { '15min': 14, '1hour': 36 }
 
 export default function PriceChart({ data, fixedPrice, theme }) {
     const c = COLORS[theme] ?? COLORS.light
-    const [showFixed, setShowFixed] = useState(true)
+    const [showFixed, setShowFixed] = useState(false)
     const [view, setView] = useState('today')
     const [intervalMode, setIntervalMode] = useState('15min')
     const [containerWidth, setContainerWidth] = useState(800)
