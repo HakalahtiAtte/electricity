@@ -278,22 +278,28 @@ export default function PriceChart({ data, fixedPrice, theme }) {
                 </div>
             </div>
 
-            <div style={{ position: 'relative' }}>
-                <div ref={scrollRef} className="chart-scroll-wrapper">
-                    <div style={{ width: chartWidth, height: 280 }}>
-                        <Chart
-                            key={`${view}-${intervalMode}`}
-                            type="bar"
-                            data={chartConfig}
-                            options={options}
-                            width={chartWidth}
-                            height={280}
-                            aria-label={`Sähkön hintakaavio — ${dayLabel}, ${intervalLabel}`}
-                            role="img"
-                        />
+            {chartData.length === 0 && view === 'tomorrow' ? (
+                <div className="chart-empty" role="status">
+                    Huomisen hinnat julkaistaan yleensä noin klo 14:15.
+                </div>
+            ) : (
+                <div style={{ position: 'relative' }}>
+                    <div ref={scrollRef} className="chart-scroll-wrapper">
+                        <div style={{ width: chartWidth, height: 280 }}>
+                            <Chart
+                                key={`${view}-${intervalMode}`}
+                                type="bar"
+                                data={chartConfig}
+                                options={options}
+                                width={chartWidth}
+                                height={280}
+                                aria-label={`Sähkön hintakaavio — ${dayLabel}, ${intervalLabel}`}
+                                role="img"
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
 
             <div className="chart-legend">
                 <span className="legend-dot" style={{ background: c.legendCheap }} /> Alle kiinteän

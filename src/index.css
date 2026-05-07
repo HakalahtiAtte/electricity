@@ -338,6 +338,8 @@ body {
 
 .chart-scroll-wrapper:active { cursor: grabbing; }
 
+.chart-empty { height: 280px; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.9rem; }
+
 .section-title { font-size: 0.9rem; font-weight: 500; color: var(--muted); }
 
 .chart-controls { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
