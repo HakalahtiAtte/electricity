@@ -2,51 +2,65 @@
 
 /* ── Theme variables ───────────────────────────────────── */
 :root {
-    --bg:             #f8fafc;
+    --bg:             #f9f7f4;
     --surface:        #ffffff;
-    --surface2:       #f1f5f9;
-    --text:           #0f172a;
-    --muted:          #64748b;
-    --border:         #e2e8f0;
-    --border-faint:   #f1f5f9;
-    --toggle-bg:      #f1f5f9;
-    --toggle-border:  #cbd5e1;
-    --sticky-bg:      rgba(248, 250, 252, 0.92);
+    --surface2:       #f3f0ec;
+    --text:           #1a1714;
+    --muted:          #8c7e72;
+    --border:         #e8e2da;
+    --border-faint:   #f0ece7;
+    --toggle-bg:      #f3f0ec;
+    --toggle-border:  #ddd5cb;
+    --sticky-bg:      rgba(249, 247, 244, 0.93);
 
-    --cheap:          #15803d;
-    --cheap-bg:       #15803d15;
-    --moderate:       #b45309;
-    --moderate-bg:    #b4530912;
-    --expensive:      #b91c1c;
-    --expensive-bg:   #b91c1c12;
+    --cheap:          #1a7a52;
+    --cheap-bg:       #1a7a5214;
+    --moderate:       #a07218;
+    --moderate-bg:    #a0721812;
+    --expensive:      #b82020;
+    --expensive-bg:   #b8202012;
 
-    --accent:         #b45309;
-    --accent-bg:      #b4530910;
-    --accent-border:  #b4530935;
+    --accent:         #8a6800;
+    --accent-bg:      #8a680012;
+    --accent-border:  #8a680038;
+
+    --hero-cheap-border: #1a7a5228;
+    --hero-mod-border:   #a0721828;
+    --hero-exp-border:   #b8202028;
+    --glow-cheap:        #1a7a5222;
+    --glow-mod:          #a0721820;
+    --glow-exp:          #b8202020;
 }
 
 [data-theme="dark"] {
-    --bg:             #0f172a;
-    --surface:        #1e293b;
-    --surface2:       #0f172a;
-    --text:           #e2e8f0;
-    --muted:          #94a3b8;
-    --border:         #334155;
-    --border-faint:   #0f172a;
-    --toggle-bg:      #0f172a;
-    --toggle-border:  #1e3a5f;
-    --sticky-bg:      rgba(15, 23, 42, 0.93);
+    --bg:             #181310;
+    --surface:        #231e1a;
+    --surface2:       #181310;
+    --text:           #e8e2da;
+    --muted:          #a8998e;
+    --border:         #3a3028;
+    --border-faint:   #2a2320;
+    --toggle-bg:      #181310;
+    --toggle-border:  #4a3e32;
+    --sticky-bg:      rgba(24, 19, 16, 0.93);
 
-    --cheap:          #4ade80;
-    --cheap-bg:       #4ade8018;
-    --moderate:       #facc15;
-    --moderate-bg:    #facc1510;
-    --expensive:      #f87171;
-    --expensive-bg:   #f8717118;
+    --cheap:          #48c990;
+    --cheap-bg:       #48c99018;
+    --moderate:       #e8c400;
+    --moderate-bg:    #e8c40010;
+    --expensive:      #e87070;
+    --expensive-bg:   #e8707018;
 
-    --accent:         #facc15;
-    --accent-bg:      #facc1510;
-    --accent-border:  #facc1530;
+    --accent:         #e8c400;
+    --accent-bg:      #e8c40010;
+    --accent-border:  #e8c40032;
+
+    --hero-cheap-border: #48c99030;
+    --hero-mod-border:   #e8c40030;
+    --hero-exp-border:   #e8707030;
+    --glow-cheap:        #48c99022;
+    --glow-mod:          #e8c40022;
+    --glow-exp:          #e8707022;
 }
 
 body {
@@ -222,13 +236,13 @@ body {
     transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
-.current-price-hero.cheap    { border-color: #4ade8030; animation: glow-green  3s ease-in-out infinite; }
-.current-price-hero.moderate { border-color: #facc1530; animation: glow-yellow 3s ease-in-out infinite; }
-.current-price-hero.expensive{ border-color: #f8717130; animation: glow-red    3s ease-in-out infinite; }
+.current-price-hero.cheap    { border-color: var(--hero-cheap-border); animation: glow-green  3s ease-in-out infinite; }
+.current-price-hero.moderate { border-color: var(--hero-mod-border);   animation: glow-yellow 3s ease-in-out infinite; }
+.current-price-hero.expensive{ border-color: var(--hero-exp-border);   animation: glow-red    3s ease-in-out infinite; }
 
-@keyframes glow-green  { 0%,100% { box-shadow: 0 0 0 0 #4ade8000; } 50% { box-shadow: 0 0 24px 2px #4ade8020; } }
-@keyframes glow-yellow { 0%,100% { box-shadow: 0 0 0 0 #facc1500; } 50% { box-shadow: 0 0 24px 2px #facc1520; } }
-@keyframes glow-red    { 0%,100% { box-shadow: 0 0 0 0 #f8717100; } 50% { box-shadow: 0 0 24px 2px #f8717120; } }
+@keyframes glow-green  { 0%,100% { box-shadow: 0 0 0 0 transparent; } 50% { box-shadow: 0 0 24px 2px var(--glow-cheap); } }
+@keyframes glow-yellow { 0%,100% { box-shadow: 0 0 0 0 transparent; } 50% { box-shadow: 0 0 24px 2px var(--glow-mod); } }
+@keyframes glow-red    { 0%,100% { box-shadow: 0 0 0 0 transparent; } 50% { box-shadow: 0 0 24px 2px var(--glow-exp); } }
 
 .current-price-label {
     font-size: 0.75rem;
