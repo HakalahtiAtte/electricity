@@ -12,7 +12,7 @@ import {
     Legend,
 } from 'chart.js'
 import { Chart } from 'react-chartjs-2'
-import { tocents, getTodayStr, getTomorrowStr, toHourly } from '../hooks/usePrices'
+import { tocents, getTodayStr, getTomorrowStr, toHourly, useNow } from '../hooks/usePrices'
 
 // Custom plugin: vertical "now" line
 const nowLinePlugin = {
@@ -43,8 +43,8 @@ ChartJS.register(
 )
 
 const COLORS = {
-    dark:  { cheap: '#4ade80', moderate: '#facc15', expensive: '#f87171', tick: '#94a3b8', gridX: '#0f172a', gridY: '#334155', nowLine: 'rgba(255,255,255,0.25)', fixedLine: '#facc15', legendCheap: '#4ade80', legendModerate: '#facc15', legendExpensive: '#f87171' },
-    light: { cheap: '#15803d', moderate: '#b45309', expensive: '#b91c1c', tick: '#64748b', gridX: '#f1f5f9', gridY: '#e2e8f0', nowLine: 'rgba(0,0,0,0.18)',      fixedLine: '#b45309', legendCheap: '#15803d', legendModerate: '#b45309', legendExpensive: '#b91c1c' },
+    dark:  { cheap: '#48c990', moderate: '#e8c400', expensive: '#e87070', tick: '#a8998e', gridX: '#181310', gridY: '#3a3028', nowLine: 'rgba(255,255,255,0.2)',  fixedLine: '#e8c400', legendCheap: '#48c990', legendModerate: '#e8c400', legendExpensive: '#e87070' },
+    light: { cheap: '#1a7a52', moderate: '#a07218', expensive: '#b82020', tick: '#8c7e72', gridX: '#f3f0ec', gridY: '#e8e2da', nowLine: 'rgba(0,0,0,0.15)',       fixedLine: '#a07218', legendCheap: '#1a7a52', legendModerate: '#a07218', legendExpensive: '#b82020' },
 }
 
 function getColor(cents, fixedPrice, c) {
@@ -72,6 +72,7 @@ export default function PriceChart({ data, fixedPrice, theme }) {
     const scrollRef = useRef(null)
     const containerRef = useRef(null)
 
+    const nowMs = useNow()
     const todayStr = getTodayStr()
     const tomorrowStr = getTomorrowStr()
 
@@ -139,14 +140,13 @@ export default function PriceChart({ data, fixedPrice, theme }) {
     // Index of current interval bar
     const currentIndex = useMemo(() => {
         if (view === 'tomorrow') return -1
-        const nowMs = Date.now()
         let idx = -1
         for (let i = 0; i < chartData.length; i++) {
             if (new Date(chartData[i].DateTime).getTime() <= nowMs) idx = i
             else break
         }
         return idx
-    }, [chartData, view])
+    }, [chartData, view, nowMs])
 
     // Scroll to current time on load
     useEffect(() => {
@@ -278,13 +278,13 @@ export default function PriceChart({ data, fixedPrice, theme }) {
                 </div>
             </div>
 
-            {chartData.length === 0 && view === 'tomorrow' ? (
-                <div className="chart-empty" role="status">
-                    Huomisen hinnat julkaistaan yleensä noin klo 14:15.
-                </div>
-            ) : (
-                <div style={{ position: 'relative' }}>
-                    <div ref={scrollRef} className="chart-scroll-wrapper">
+            <div style={{ position: 'relative' }}>
+                <div ref={scrollRef} className="chart-scroll-wrapper">
+                    {chartData.length === 0 && view === 'tomorrow' ? (
+                        <div className="chart-empty" role="status">
+                            Huomisen hinnat julkaistaan yleensä noin klo 14:15.
+                        </div>
+                    ) : (
                         <div style={{ width: chartWidth, height: 280 }}>
                             <Chart
                                 key={`${view}-${intervalMode}`}
@@ -297,9 +297,9 @@ export default function PriceChart({ data, fixedPrice, theme }) {
                                 role="img"
                             />
                         </div>
-                    </div>
+                    )}
                 </div>
-            )}
+            </div>
 
             <div className="chart-legend">
                 <span className="legend-dot" style={{ background: c.legendCheap }} /> Alle kiinteän

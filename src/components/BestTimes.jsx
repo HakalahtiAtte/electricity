@@ -42,6 +42,9 @@ export default function BestTimes({ data, fixedPrice }) {
                     <h2 className="section-title">
                         {intervalMode === '15min' ? 'Parhaat 15 min jaksot tänään' : 'Parhaat tunnit tänään'}
                     </h2>
+                    <span className="collapse-btn" aria-hidden="true" style={{ marginLeft: '8px' }}>
+                        {open ? '▲' : '▼'}
+                    </span>
                 </div>
 
                 {open && (
@@ -57,15 +60,6 @@ export default function BestTimes({ data, fixedPrice }) {
                         ))}
                     </div>
                 )}
-
-                <span
-                    className="collapse-btn"
-                    aria-hidden="true"
-                    onClick={() => setOpen(o => !o)}
-                    style={{ marginLeft: '8px' }}
-                >
-                    {open ? '▲' : '▼'}
-                </span>
             </div>
 
             {open && sorted.map((p) => {

@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react'
-import { usePrices, getCurrentEntry, tocents } from './hooks/usePrices'
+import { useState, useEffect } from 'react'
+import { usePrices, useNow, getCurrentEntry, tocents } from './hooks/usePrices'
 import SettingsBar from './components/SettingsBar'
 import SummaryCards from './components/SummaryCards'
 import PriceChart from './components/PriceChart'
@@ -64,9 +64,9 @@ export default function App() {
         }
     }, [data])
 
-    const current = data.length ? getCurrentEntry(data) : null
+    const nowMs = useNow()
+    const current = data.length ? getCurrentEntry(data, nowMs) : null
     const currentCents = current ? tocents(current.PriceNoTax) : null
-    const nowMs = Date.now()
     const nextEntry = data.find(p => new Date(p.DateTime).getTime() > nowMs)
     const nextCents = nextEntry ? tocents(nextEntry.PriceNoTax) : null
 
@@ -125,9 +125,9 @@ export default function App() {
             {loading && <div className="status-msg">Ladataan hintoja...</div>}
             {error && <div className="status-msg error">{error}</div>}
 
-            {!loading && !error && data.length > 0 && (
+            {!loading && data.length > 0 && (
                 <>
-                    <SummaryCards data={data} fixedPrice={fixedPrice} />
+                    <SummaryCards data={data} fixedPrice={fixedPrice} nowMs={nowMs} />
                     <PriceChart data={data} fixedPrice={fixedPrice} theme={theme} />
                     <Comparison data={data} fixedPrice={fixedPrice} />
                     <BestTimes data={data} fixedPrice={fixedPrice} />

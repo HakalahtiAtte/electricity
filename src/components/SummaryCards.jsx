@@ -24,7 +24,7 @@ function maxEntry(entries) {
     return entries.reduce((m, p) => p.PriceNoTax > m.PriceNoTax ? p : m)
 }
 
-export default function SummaryCards({ data, fixedPrice }) {
+export default function SummaryCards({ data, fixedPrice, nowMs }) {
     const todayStr = getTodayStr()
     const tomorrowStr = getTomorrowStr()
 
@@ -32,10 +32,9 @@ export default function SummaryCards({ data, fixedPrice }) {
     const tomorrow = data.filter(p => p.DateTime.slice(0, 10) === tomorrowStr)
 
     const todayCents = today.map(p => tocents(p.PriceNoTax))
-    const current = getCurrentEntry(data)
+    const current = getCurrentEntry(data, nowMs)
     const currentCents = current ? tocents(current.PriceNoTax) : null
 
-    const nowMs = Date.now()
     const nextEntry = data.find(p => new Date(p.DateTime).getTime() > nowMs)
     const nextCents = nextEntry ? tocents(nextEntry.PriceNoTax) : null
     const trendUp = nextCents !== null && currentCents !== null && nextCents > currentCents

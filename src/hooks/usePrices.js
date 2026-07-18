@@ -34,11 +34,21 @@ export function toHourly(data) {
     }))
 }
 
-export function getCurrentEntry(data) {
-    const nowMs = Date.now()
+export function getCurrentEntry(data, nowMs = Date.now()) {
     return data
         .filter(p => new Date(p.DateTime).getTime() <= nowMs)
         .sort((a, b) => new Date(b.DateTime) - new Date(a.DateTime))[0]
+}
+
+// Render-safe clock: components read `now` from state instead of calling
+// Date.now() directly during render (impure, breaks react-hooks/purity).
+export function useNow(intervalMs = 30000) {
+    const [now, setNow] = useState(() => Date.now())
+    useEffect(() => {
+        const id = setInterval(() => setNow(Date.now()), intervalMs)
+        return () => clearInterval(id)
+    }, [intervalMs])
+    return now
 }
 
 export function usePrices() {
@@ -60,6 +70,7 @@ export function usePrices() {
                 setData(sorted)
                 setLastUpdated(new Date())
             } catch (e) {
+                console.error('Hintojen lataus epäonnistui', e)
                 setError('Hintojen lataus epäonnistui. Yritä uudelleen.')
             } finally {
                 setLoading(false)
